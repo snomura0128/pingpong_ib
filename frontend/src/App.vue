@@ -5,6 +5,8 @@
         v-model="drawer"
         :clipped="$vuetify.breakpoint.lgAndUp"
         app
+        color="blue darken-4"
+        dark
       >
         <v-list>
           <template v-for="item in items">
@@ -62,6 +64,7 @@
                 hide-details
                 prepend-inner-icon="mdi-magnify"
                 label="キーワード検索"
+                class="hidden-md-and-up"
               ></v-text-field>
             </v-list-item-content>
           </v-list-item>
@@ -76,7 +79,7 @@
       >
         <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
         <v-toolbar-title style="width: 300px" class="ml-0 pl-4">
-          <span class="hidden-sm-and-down">卓ログ</span>
+          <span>卓ログ</span>
         </v-toolbar-title>
         <v-text-field
           flat
