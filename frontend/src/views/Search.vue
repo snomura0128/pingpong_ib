@@ -2,69 +2,107 @@
   <v-container class="spacing-playground pa-2" fluid>
     <v-row>
       <v-col>
-        <v-card class="spacing-playground pa-2">
-          <v-card-title>検索条件</v-card-title>
-          <v-divider> </v-divider>
-          <v-checkbox
-            v-model="isAllWardsSelected"
-            @click="selectAllWards"
-            hide-details
-            label="すべて"
-            class="mt-0"
-          ></v-checkbox>
-          <v-row>
-            <v-col
-              v-for="(wardpart, i) in [wards.slice(0, 12), wards.slice(12, 23)]"
-              v-bind:key="i"
-              cols="12"
-              sm="6"
-            >
-              <v-row>
-                <v-col
-                  v-for="(wardTemp, j) in [
-                    wardpart.slice(0, 6),
-                    wardpart.slice(6),
-                  ]"
-                  v-bind:key="j"
-                >
-                  <v-checkbox
-                    v-for="ward in wardTemp"
-                    v-bind:key="ward.id"
-                    v-bind:label="ward.name"
-                    :value="ward.id"
-                    v-model="selectedWardIds"
-                    hide-details
-                    class="ward-checkbox mt-0"
-                  ></v-checkbox>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-divider class="my-1"> </v-divider>
-          <v-checkbox
-            v-model="isAllFacilityTypesSelected"
-            @click="selectAllFacilityTypes"
-            hide-details
-            label="すべて"
-            class="mt-0"
-          ></v-checkbox>
-          <v-row>
-            <v-col
-              v-for="facilityType in facilityTypes"
-              v-bind:key="facilityType.id"
-            >
-              <v-checkbox
-                v-bind:label="facilityType.name"
-                :value="facilityType.id"
-                v-model="selectedFacilityTypeIds"
-                hide-details
-                class="facility-type-checkbox mt-0"
-              ></v-checkbox>
-            </v-col>
-          </v-row>
-          <v-divider class="my-1"> </v-divider>
-          <v-row>
-            <v-col class="my-1">
+        <v-card class="spacing-playground pa-2" elevation="5">
+          <v-card-title class="pa-2">検索条件</v-card-title>
+          <v-expansion-panels v-model="wardPanelOpend">
+            <v-expansion-panel>
+              <v-expansion-panel-header
+                class="pa-1"
+                disabled
+                style="cursor: default"
+                id="wardPanelHeader"
+              >
+                <template v-slot:actions>
+                  <v-icon color="primary">mdi-chevron-triple-down</v-icon>
+                </template>
+                <v-chip class="ma-2" color="green" text-color="white">
+                  地域
+                </v-chip>
+                <v-checkbox
+                  v-model="isAllWardsSelected"
+                  @click="selectAllWards"
+                  hide-details
+                  label="すべて"
+                  class="mt-0"
+                ></v-checkbox
+              ></v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-row>
+                  <v-col
+                    v-for="(wardpart, i) in [
+                      wards.slice(0, 12),
+                      wards.slice(12, 23),
+                    ]"
+                    v-bind:key="i"
+                    cols="12"
+                    sm="6"
+                  >
+                    <v-row>
+                      <v-col
+                        v-for="(wardTemp, j) in [
+                          wardpart.slice(0, 6),
+                          wardpart.slice(6),
+                        ]"
+                        v-bind:key="j"
+                      >
+                        <v-checkbox
+                          v-for="ward in wardTemp"
+                          v-bind:key="ward.id"
+                          v-bind:label="ward.name"
+                          :value="ward.id"
+                          v-model="selectedWardIds"
+                          hide-details
+                          class="ward-checkbox mt-0"
+                        ></v-checkbox>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+          <v-expansion-panels v-model="facilityTypePanelOpend">
+            <v-expansion-panel>
+              <v-expansion-panel-header
+                class="pa-1"
+                disabled
+                style="cursor: default"
+                id="facilityTypePanelHeader"
+              >
+                <template v-slot:actions>
+                  <v-icon color="primary">mdi-chevron-triple-down</v-icon>
+                </template>
+                <v-chip class="ma-2" color="green" text-color="white">
+                  区分
+                </v-chip>
+                <v-checkbox
+                  v-model="isAllFacilityTypesSelected"
+                  @click="selectAllFacilityTypes"
+                  hide-details
+                  label="すべて"
+                  class="mt-0"
+                ></v-checkbox>
+              </v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-row>
+                  <v-col
+                    v-for="facilityType in facilityTypes"
+                    v-bind:key="facilityType.id"
+                  >
+                    <v-checkbox
+                      v-bind:label="facilityType.name"
+                      :value="facilityType.id"
+                      v-model="selectedFacilityTypeIds"
+                      hide-details
+                      class="facility-type-checkbox mt-0"
+                    ></v-checkbox>
+                  </v-col>
+                </v-row>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+          <v-row class="mt-0">
+            <v-col>
               <v-text-field
                 flat
                 solo-inverted
@@ -74,8 +112,8 @@
               ></v-text-field>
             </v-col>
           </v-row>
-          <v-row>
-            <v-col class="pt-0">
+          <v-row class="mt-0">
+            <v-col>
               <v-btn elevation="4" block color="primary">検索</v-btn></v-col
             >
           </v-row>
@@ -86,10 +124,13 @@
 </template>
 22
 <script>
+import $ from "jquery";
 export default {
   data: () => ({
     isAllWardsSelected: true,
     isAllFacilityTypesSelected: true,
+    wardPanelOpend: null,
+    facilityTypePanelOpend: null,
     wards: [
       { id: 1, name: "足立区" },
       { id: 2, name: "荒川区" },
@@ -153,5 +194,28 @@ export default {
       }
     },
   },
+  mounted: function () {
+    const wardIcon = $("#wardPanelHeader").children(
+      ".v-expansion-panel-header__icon"
+    );
+    wardIcon[0].style.cursor = "pointer";
+    wardIcon[0].onclick = () => {
+      this.wardPanelOpend = this.wardPanelOpend == null ? 0 : null;
+    };
+
+    const facilityTypeIcon = $("#facilityTypePanelHeader").children(
+      ".v-expansion-panel-header__icon"
+    );
+    facilityTypeIcon[0].style.cursor = "pointer";
+    facilityTypeIcon[0].onclick = () => {
+      this.facilityTypePanelOpend =
+        this.facilityTypePanelOpend == null ? 0 : null;
+    };
+  },
 };
 </script>
+<style scoped>
+.v-expansion-panel-header > *:not(.v-expansion-panel-header__icon) {
+  flex: initial;
+}
+</style>
