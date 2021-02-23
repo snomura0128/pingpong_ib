@@ -14,28 +14,30 @@
           ></v-checkbox>
           <v-row>
             <v-col
-              v-for="(wardpart, i) in [
-                wards.slice(0, 4),
-                wards.slice(4, 8),
-                wards.slice(8, 12),
-                wards.slice(12, 16),
-                wards.slice(16, 20),
-                wards.slice(20, 23),
-              ]"
+              v-for="(wardpart, i) in [wards.slice(0, 12), wards.slice(12, 23)]"
               v-bind:key="i"
               cols="12"
-              sm="2"
-              md="2"
+              sm="6"
             >
-              <v-checkbox
-                v-for="ward in wardpart"
-                v-bind:key="ward.id"
-                v-bind:label="ward.name"
-                :value="ward.id"
-                v-model="selectedWardIds"
-                hide-details
-                class="ward-checkbox mt-0"
-              ></v-checkbox>
+              <v-row>
+                <v-col
+                  v-for="(wardTemp, j) in [
+                    wardpart.slice(0, 6),
+                    wardpart.slice(6),
+                  ]"
+                  v-bind:key="j"
+                >
+                  <v-checkbox
+                    v-for="ward in wardTemp"
+                    v-bind:key="ward.id"
+                    v-bind:label="ward.name"
+                    :value="ward.id"
+                    v-model="selectedWardIds"
+                    hide-details
+                    class="ward-checkbox mt-0"
+                  ></v-checkbox>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
           <v-divider class="my-1"> </v-divider>
@@ -50,9 +52,6 @@
             <v-col
               v-for="facilityType in facilityTypes"
               v-bind:key="facilityType.id"
-              cols="12"
-              sm="2"
-              md="2"
             >
               <v-checkbox
                 v-bind:label="facilityType.name"
@@ -76,7 +75,9 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col class="pt-0"> <v-btn elevation="4" block>検索</v-btn></v-col>
+            <v-col class="pt-0">
+              <v-btn elevation="4" block color="primary">検索</v-btn></v-col
+            >
           </v-row>
         </v-card>
       </v-col>
