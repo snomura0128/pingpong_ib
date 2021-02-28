@@ -30,35 +30,16 @@
                   ></v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <v-row>
-                      <v-col
-                        v-for="(wardpart, i) in [
-                          wards.slice(0, 12),
-                          wards.slice(12, 23),
-                        ]"
+                      <v-checkbox
+                        v-for="(ward, i) in wards"
                         v-bind:key="i"
-                        cols="12"
-                        sm="6"
-                      >
-                        <v-row>
-                          <v-col
-                            v-for="(wardTemp, j) in [
-                              wardpart.slice(0, 6),
-                              wardpart.slice(6),
-                            ]"
-                            v-bind:key="j"
-                          >
-                            <v-checkbox
-                              v-for="ward in wardTemp"
-                              v-bind:key="ward.id"
-                              v-bind:label="ward.name"
-                              :value="ward.id"
-                              v-model="selectedWardIds"
-                              hide-details
-                              class="ward-checkbox mt-0"
-                            ></v-checkbox>
-                          </v-col>
-                        </v-row>
-                      </v-col>
+                        v-bind:label="ward.name"
+                        :value="ward.id"
+                        v-model="selectedWardIds"
+                        hide-details
+                        class="ward-checkbox mt-0"
+                        width="15px"
+                      ></v-checkbox>
                     </v-row>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -80,7 +61,7 @@
                       <v-icon color="primary">mdi-chevron-triple-down</v-icon>
                     </template>
                     <v-chip class="ma-2" color="green" text-color="white">
-                      区分
+                      ジャンル
                     </v-chip>
                     <v-checkbox
                       v-model="isAllFacilityTypesSelected"
@@ -92,18 +73,15 @@
                   </v-expansion-panel-header>
                   <v-expansion-panel-content>
                     <v-row>
-                      <v-col
+                      <v-checkbox
                         v-for="facilityType in facilityTypes"
                         v-bind:key="facilityType.id"
-                      >
-                        <v-checkbox
-                          v-bind:label="facilityType.name"
-                          :value="facilityType.id"
-                          v-model="selectedFacilityTypeIds"
-                          hide-details
-                          class="facility-type-checkbox mt-0"
-                        ></v-checkbox>
-                      </v-col>
+                        v-bind:label="facilityType.name"
+                        :value="facilityType.id"
+                        v-model="selectedFacilityTypeIds"
+                        hide-details
+                        class="facility-type-checkbox mt-0"
+                      ></v-checkbox>
                     </v-row>
                   </v-expansion-panel-content>
                 </v-expansion-panel>
@@ -135,50 +113,83 @@
         v-bind:key="facility.id"
         cols="12"
         sm="6"
-        md="4"
+        xl="4"
       >
-        <v-card color="primary" class="spacing-playground py-2">
-          <v-card-title class="font-weight-bold py-1 white--text">
-            <VueResponsiveText>{{ facility.name }}</VueResponsiveText>
-          </v-card-title>
-          <v-card-text class="pa-2">
-            <v-row align="center" class="mx-0">
-              <v-rating
-                :value="facility.evaluation"
-                color="amber"
-                dense
-                half-increments
-                readonly
-                size="14"
-              ></v-rating>
-              <div class="white--text ml-4">
-                {{ facility.evaluation }}
-              </div>
-            </v-row>
-          </v-card-text>
-          <v-card-text class="pa-1">
-            <v-chip-group>
-              <v-chip
-                v-for="facilityType in facility.facilityTypes"
-                v-bind:key="facilityType"
-                :color="facilityTypes[facilityType - 1].color"
-                label
-                text-color="white"
-                class="my-0"
-              >
-                <v-icon left small> mdi-label </v-icon>
-                {{ facilityTypes[facilityType - 1].name }}
-              </v-chip>
-            </v-chip-group>
-          </v-card-text>
+        <v-card
+          class="spacing-playground pb-2"
+          hover
+          :to="{ name: '' }"
+          :ripple="false"
+        >
           <v-card>
             <v-img
               :src="facility.imageUrl"
-              height="125"
-              contain
               class="grey darken-4"
-            ></v-img>
+              aspect-ratio="1.5"
+            >
+              <!-- <v-row class="pt-3 pl-4">
+                <v-chip-group>
+                  <v-chip
+                    v-for="facilityType in facility.facilityTypes"
+                    v-bind:key="facilityType"
+                    :color="facilityTypes[facilityType - 1].color"
+                    label
+                    text-color="white"
+                    class="my-0"
+                    small
+                  >
+                    <v-icon left x-small> mdi-label </v-icon>
+                    {{ facilityTypes[facilityType - 1].name }}
+                  </v-chip>
+                </v-chip-group>
+              </v-row> -->
+            </v-img>
           </v-card>
+          <v-row class="pa-5">
+            <v-chip
+              v-for="facilityType in facility.facilityTypes"
+              v-bind:key="facilityType"
+              :color="facilityTypes[facilityType - 1].color"
+              label
+              text-color="white"
+              class="mr-1"
+            >
+              <v-icon left x-small> mdi-label </v-icon>
+              {{ facilityTypes[facilityType - 1].name }}
+            </v-chip>
+          </v-row>
+          <v-card-title class="py-0">
+            <!-- <template v-if="facility.name.bytes() < 25"
+              >{{ facility.name }}
+            </template> -->
+            <template v-if="true">{{ facility.name }} </template>
+            <VueResponsiveText v-else>{{ facility.name }}</VueResponsiveText>
+          </v-card-title>
+          <v-row class="mx-4 py-2">
+            <v-rating
+              :value="facility.evaluation"
+              color="amber"
+              dense
+              half-increments
+              readonly
+              size="16"
+            ></v-rating>
+            <div class="ml-2">
+              {{ facility.evaluation }}
+            </div>
+          </v-row>
+          <v-row> </v-row>
+          <v-btn
+            icon
+            color="pink"
+            absolute
+            right
+            top
+            @click="switchFavorite(facility.id)"
+          >
+            <v-icon v-if="facility.favorite">mdi-heart</v-icon>
+            <v-icon v-else>mdi-heart-outline</v-icon>
+          </v-btn>
         </v-card>
       </v-col>
     </v-row>
@@ -191,41 +202,43 @@ export default {
   data: () => ({
     isAllWardsSelected: true,
     isAllFacilityTypesSelected: true,
-    wardPanelOpend: null,
-    facilityTypePanelOpend: null,
+    wardPanelOpend: 0,
+    facilityTypePanelOpend: 0,
     wards: [
-      { id: 1, name: "足立区" },
-      { id: 2, name: "荒川区" },
-      { id: 3, name: "板橋区" },
-      { id: 4, name: "江戸川区" },
-      { id: 5, name: "大田区" },
-      { id: 6, name: "葛飾区" },
-      { id: 7, name: "北区" },
-      { id: 8, name: "江東区" },
-      { id: 9, name: "品川区" },
-      { id: 10, name: "渋谷区" },
-      { id: 11, name: "新宿区" },
-      { id: 12, name: "杉並区" },
-      { id: 13, name: "墨田区" },
-      { id: 14, name: "世田谷区" },
-      { id: 15, name: "台東区" },
-      { id: 16, name: "千代田区" },
-      { id: 17, name: "中央区" },
-      { id: 18, name: "豊島区" },
-      { id: 19, name: "中野区" },
-      { id: 20, name: "練馬区" },
-      { id: 21, name: "文京区" },
-      { id: 22, name: "港区" },
-      { id: 23, name: "目黒区" },
+      { id: "01", name: "千代田区" },
+      { id: "02", name: "中央区" },
+      { id: "03", name: "港区" },
+      { id: "04", name: "新宿区" },
+      { id: "05", name: "文京区" },
+      { id: "06", name: "台東区" },
+      { id: "07", name: "墨田区" },
+      { id: "08", name: "江東区" },
+      { id: "09", name: "品川区" },
+      { id: "10", name: "目黒区" },
+      { id: "11", name: "大田区" },
+      { id: "12", name: "世田谷区" },
+      { id: "13", name: "渋谷区" },
+      { id: "14", name: "中野区" },
+      { id: "15", name: "杉並区" },
+      { id: "16", name: "豊島区" },
+      { id: "17", name: "北区" },
+      { id: "18", name: "荒川区" },
+      { id: "19", name: "板橋区" },
+      { id: "20", name: "練馬区" },
+      { id: "21", name: "足立区" },
+      { id: "22", name: "葛飾区" },
+      { id: "23", name: "江戸川区" },
     ],
     facilityTypes: [
-      { id: 1, name: "体育館", color: "red" },
-      { id: 2, name: "卓球教室", color: "green" },
-      { id: 3, name: "卓球バー", color: "yellow" },
-      { id: 4, name: "卓球スタジオ", color: "black" },
-      { id: 5, name: "その他", color: "pink" },
+      { id: 1, name: "体育館", color: "deep-purple darken-2" },
+      { id: 2, name: "卓球教室", color: "teal darken-2" },
+      { id: 3, name: "卓球バー", color: "blue darken-4" },
+      { id: 4, name: "卓球スタジオ", color: "orange darken-4" },
+      { id: 5, name: "その他", color: "grey darken-3" },
     ],
-    selectedWardIds: [...Array(23)].map((_, i) => i + 1),
+    selectedWardIds: [...Array(23)].map((_, i) =>
+      (i + 1).toString().padStart(2, 0)
+    ),
     selectedFacilityTypeIds: [...Array(5)].map((_, i) => i + 1),
     response: [
       {
@@ -235,6 +248,7 @@ export default {
         imageUrl:
           "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2010/04/3e37f68e2bd1b9c7d00bd1aa7e5f7844-420x296.jpg",
         evaluation: 4.2,
+        favorite: true,
       },
       {
         id: 2,
@@ -243,6 +257,7 @@ export default {
         imageUrl:
           "http://www.shinjuku-sportscenter.com/images/facility/facility_main_b.jpg",
         evaluation: 4.1,
+        favorite: true,
       },
       {
         id: 3,
@@ -251,14 +266,16 @@ export default {
         imageUrl:
           "https://www.green-palace.jp/share/facility/img/facility_01.jpg",
         evaluation: 4.1,
+        favorite: true,
       },
       {
         id: 4,
         name: "台東区リバーサイドスポーツセンター",
-        facilityTypes: [1],
+        facilityTypes: [1, 2, 3, 5],
         imageUrl:
           "https://www.taitocity.net/zaidan/riverside/wp-content/uploads/sites/2/2015/12/river_top01.png",
         evaluation: 5.0,
+        favorite: false,
       },
       {
         id: 5,
@@ -267,6 +284,7 @@ export default {
         imageUrl:
           "https://funtable.info/wp-content/uploads/2020/12/junior-bosyu.jpg",
         evaluation: 2.2,
+        favorite: false,
       },
       {
         id: 6,
@@ -304,6 +322,13 @@ export default {
         this.isAllFacilityTypesSelected = true;
       }
     },
+    switchFavorite(id) {
+      for (var facility of this.response) {
+        if (facility.id == id) {
+          facility.favorite = !facility.favorite;
+        }
+      }
+    },
   },
   mounted: function () {
     const wardIcon = $("#wardPanelHeader").children(
@@ -323,17 +348,6 @@ export default {
         this.facilityTypePanelOpend == null ? 0 : null;
     };
   },
-  filters: {
-    // fillSpace: function (value) {
-    //   console.log(value.bytes());
-    //   if (value.bytes() > 20) {
-    //     return value;
-    //   } else {
-    //     console.log(value);
-    //     return "   " + value + "   ";
-    //   }
-    // },
-  },
   components: {
     VueResponsiveText,
   },
@@ -342,5 +356,14 @@ export default {
 <style scoped>
 .v-expansion-panel-header > *:not(.v-expansion-panel-header__icon) {
   flex: initial;
+}
+.v-input--selection-controls.v-input {
+  width: 135px;
+}
+.v-btn--absolute.v-btn--top {
+  top: 6px;
+}
+.v-btn--absolute.v-btn--right {
+  right: 6px;
 }
 </style>
