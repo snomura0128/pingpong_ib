@@ -101,11 +101,21 @@
           </v-row>
           <v-row class="mt-0">
             <v-col>
-              <v-btn elevation="4" block color="primary">検索</v-btn></v-col
+              <v-btn elevation="4" block color="primary" @click="search()"
+                >検索</v-btn
+              ></v-col
             >
           </v-row>
         </v-card>
       </v-col>
+    </v-row>
+    <v-row v-show="loading" justify="center">
+      <v-progress-circular
+        :size="70"
+        :width="7"
+        color="primary"
+        indeterminate
+      ></v-progress-circular>
     </v-row>
     <v-row>
       <v-col
@@ -127,22 +137,6 @@
               class="grey darken-4"
               aspect-ratio="1.5"
             >
-              <!-- <v-row class="pt-3 pl-4">
-                <v-chip-group>
-                  <v-chip
-                    v-for="facilityType in facility.facilityTypes"
-                    v-bind:key="facilityType"
-                    :color="facilityTypes[facilityType - 1].color"
-                    label
-                    text-color="white"
-                    class="my-0"
-                    small
-                  >
-                    <v-icon left x-small> mdi-label </v-icon>
-                    {{ facilityTypes[facilityType - 1].name }}
-                  </v-chip>
-                </v-chip-group>
-              </v-row> -->
             </v-img>
           </v-card>
           <v-row class="pa-5">
@@ -204,6 +198,7 @@ export default {
     isAllFacilityTypesSelected: true,
     wardPanelOpend: 0,
     facilityTypePanelOpend: 0,
+    loading: false,
     wards: [
       { id: "01", name: "千代田区" },
       { id: "02", name: "中央区" },
@@ -240,60 +235,7 @@ export default {
       (i + 1).toString().padStart(2, 0)
     ),
     selectedFacilityTypeIds: [...Array(5)].map((_, i) => i + 1),
-    response: [
-      {
-        id: 1,
-        name: "新宿区コズミックセンター",
-        facilityTypes: [1],
-        imageUrl:
-          "https://www.regasu-shinjuku.or.jp/regasu/wp-content/uploads/2010/04/3e37f68e2bd1b9c7d00bd1aa7e5f7844-420x296.jpg",
-        evaluation: 4.2,
-        favorite: true,
-      },
-      {
-        id: 2,
-        name: "新宿スポーツセンター",
-        facilityTypes: [1],
-        imageUrl:
-          "http://www.shinjuku-sportscenter.com/images/facility/facility_main_b.jpg",
-        evaluation: 4.1,
-        favorite: true,
-      },
-      {
-        id: 3,
-        name: "江戸川区グリーンパレス",
-        facilityTypes: [1],
-        imageUrl:
-          "https://www.green-palace.jp/share/facility/img/facility_01.jpg",
-        evaluation: 4.1,
-        favorite: true,
-      },
-      {
-        id: 4,
-        name: "台東区リバーサイドスポーツセンター",
-        facilityTypes: [1, 2, 3, 5],
-        imageUrl:
-          "https://www.taitocity.net/zaidan/riverside/wp-content/uploads/sites/2/2015/12/river_top01.png",
-        evaluation: 5.0,
-        favorite: false,
-      },
-      {
-        id: 5,
-        name: "卓球空間FunTable",
-        facilityTypes: [2, 4],
-        imageUrl:
-          "https://funtable.info/wp-content/uploads/2020/12/junior-bosyu.jpg",
-        evaluation: 2.2,
-        favorite: false,
-      },
-      {
-        id: 6,
-        name: "卓球酒場 ぽん蔵 高田馬場店",
-        facilityTypes: [3],
-        imageUrl: "http://ponzo.jp/img/photo_baba1.png",
-        evaluation: 3.2,
-      },
-    ],
+    response: [],
   }),
   methods: {
     selectAllWards() {
@@ -328,6 +270,20 @@ export default {
           facility.favorite = !facility.favorite;
         }
       }
+    },
+    search: function () {
+      this.response = [];
+      this.loading = true;
+      this.axios
+        .get("/api/search")
+        .then((res) => {
+          this.loading = false;
+          this.response = res.data;
+        })
+        .catch((e) => {
+          alert(e);
+          this.loading = false;
+        });
     },
   },
   mounted: function () {

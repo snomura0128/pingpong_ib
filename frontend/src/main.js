@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 // Shift_JISで単純に半角１バイト全角２バイトで計算する
 String.prototype.bytes = function () {
@@ -18,6 +20,7 @@ String.prototype.bytes = function () {
   return length;
 };
 
+Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 
 new Vue({
