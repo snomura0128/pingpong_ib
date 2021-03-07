@@ -1,11 +1,6 @@
-from flask import Flask, render_template, redirect, url_for, abort, request, session
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
-# from weakref import secure_filename
-# from wtforms import Form
-# from wtforms import StringField, SubmitField, IntegerField
 
-import pykakasi
-import os
 
 app = Flask(__name__)
 
@@ -31,9 +26,9 @@ def index():
     return render_template('index.html')
 
 
-@app.errorhandler(404)
-def page_not_found(error):
-    return render_template('not_found.html'), 404
+# @app.errorhandler(404)
+# def page_not_found(error):
+#     return render_template('not_found.html'), 404
 
 
 if __name__ == "__main__":

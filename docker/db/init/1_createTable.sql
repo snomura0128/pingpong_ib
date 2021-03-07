@@ -37,7 +37,7 @@ CREATE TABLE favorite (
 );
 
 
-insert into ward values
+insert into ward (id, name) values
 ('01', '千代田区'), ('02', '中央区'),('03', '港区')
 ,('04', '新宿区'),('05', '文京区'),('06', '台東区')
 ,('07', '墨田区'),('08', '江東区'),('09', '品川区')
