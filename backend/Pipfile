@@ -5,6 +5,13 @@ name = "pypi"
 
 [packages]
 flask = "*"
+autopep8 = "*"
+pykakasi = "*"
+flask-wtf = "*"
+wtforms = "*"
+flask-migrate = "*"
+flask-sqlalchemy = "*"
+psycopg2 = "*"
 
 [dev-packages]
 autopep8 = "*"
