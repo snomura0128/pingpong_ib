@@ -17,6 +17,7 @@ sqlalchemy = "*"
 flask-bcrypt = "*"
 flask-login = "*"
 flask-restful = "*"
+gunicorn = "*"
 
 [dev-packages]
 autopep8 = "*"
