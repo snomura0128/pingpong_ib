@@ -14,6 +14,8 @@ flask-sqlalchemy = "*"
 psycopg2 = "*"
 python-dotenv = "*"
 sqlalchemy = "*"
+flask-bcrypt = "*"
+flask-login = "*"
 
 [dev-packages]
 autopep8 = "*"
