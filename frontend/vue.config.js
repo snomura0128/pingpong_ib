@@ -9,9 +9,9 @@ module.exports = {
       serverDir: './srv'
     }
   },
+  assetsDir: 'static',
   devServer: {
     port: 8080,
-    // localhostでvueからexpressにAPIリクエストを送信する為の設定
-    proxy: 'http://localhost:3000'
-},
+    host: '127.0.0.1'
+  }
 }
